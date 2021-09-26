@@ -1,31 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_app/pages/home_page.dart';
+
+import 'bloc/home_bloc.dart';
+import 'di/injection.dart';
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key, required this.url}) : super(key: key);
-  final String url;
+  const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Test App',
-      home: MainPage(url: url),
-    );
-  }
-}
-
-class MainPage extends StatefulWidget {
-  const MainPage({Key? key, required this.url}) : super(key: key);
-  final String url;
-
-  @override
-  State<MainPage> createState() => _MainPageState();
-}
-
-class _MainPageState extends State<MainPage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text(widget.url),
+      home: BlocProvider(
+        create: (context) => getIt<HomeBloc>(),
+        child: const HomePage(),
       ),
     );
   }

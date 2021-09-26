@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:test_app/di/injection.dart';
 
 import 'main.dart';
 
-Future<void> main() async {
-  runApp(const MyApp(url: "stage-link",));
+void main()  {
+  WidgetsFlutterBinding.ensureInitialized();
+  configureInjection(Env.stage);
+  runApp(const MyApp());
 }
