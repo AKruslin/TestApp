@@ -1,8 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:floor/floor.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
-import 'package:test_app/database/comment_db.dart';
+import 'package:test_app/database/database.dart';
 import 'package:test_app/models/comment.dart';
 import 'package:test_app/services/network_service.dart';
 import 'package:test_app/services/rest_client.dart';
