@@ -13,24 +13,24 @@ class CommentDataTableRow {
         DataRow(
           cells: [
             DataCell(
-              Text(comment.id.toString()),
-              onTap: () => getAlertDialog(comment.id.toString()),
+              Text(comment.id.toString(), key:ValueKey('id$i'),),
+              onTap: () => getAlertDialog('ID',  comment.id.toString()),
             ),
             DataCell(
-              Text(comment.postId.toString()),
-              onTap: () => getAlertDialog(comment.postId.toString()),
+              Text(comment.postId.toString(),key:ValueKey('post-id$i'),),
+              onTap: () => getAlertDialog('Post-ID', comment.postId.toString()),
             ),
             DataCell(
-              Text(comment.name),
-              onTap: () => getAlertDialog(comment.name),
+              Text(comment.name,key:ValueKey('name$i'),),
+              onTap: () => getAlertDialog('Name', comment.name),
             ),
             DataCell(
-              Text(comment.email),
-              onTap: () => getAlertDialog(comment.email),
+              Text(comment.email,key:ValueKey('email$i'),),
+              onTap: () => getAlertDialog('Email', comment.email),
             ),
             DataCell(
-              Text(comment.body),
-              onTap: () => getAlertDialog(comment.body),
+              Text(comment.body,key:ValueKey('body$i'),),
+              onTap: () => getAlertDialog('Body', comment.body),
             ),
           ],
         ),
@@ -42,15 +42,18 @@ class CommentDataTableRow {
     return dataRowComments;
   }
 
-  dynamic getAlertDialog(String text) => showDialog(
+  dynamic getAlertDialog( String title,String content)  {
+    return showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text(text),
+          key: ValueKey('AlertDialog-$title$content'),
+          title: Text(title),
+          content: Text(title+'-'+content),
           actions: [
             TextButton(
                 onPressed: () => Navigator.pop(context),
                 child: const Text("Dismiss")),
           ],
         ),
-      );
+      );}
 }

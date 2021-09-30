@@ -39,8 +39,9 @@ dependencies:
   injectable: ^1.5.0
   get_it: ^7.2.0
 
-  #State Managment
+  #State Management
   flutter_bloc: ^7.3.0
+  equatable: ^2.0.3
 
   #Network
   retrofit: ^2.0.1
@@ -56,10 +57,15 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  #generators
   build_runner: ^2.1.2
   injectable_generator: ^1.5.2
   retrofit_generator: ^2.0.1
   floor_generator: ^1.2.0
+
+  #tests
+  bloc_test: ^8.2.0
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

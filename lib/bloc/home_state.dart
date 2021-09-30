@@ -1,9 +1,12 @@
 part of 'home_bloc.dart';
 
 @immutable
-abstract class HomeState {
+abstract class HomeState extends Equatable {
   List<DataRow> getData() => [];
   bool getDataLocation() => false;
+
+  @override
+  List<Object?> get props => [];
 }
 
 class HomeInitial extends HomeState {}
@@ -21,6 +24,8 @@ class LoadedNetworkComments extends HomeState {
   List<DataRow> getData() => data;
   @override
   bool getDataLocation() => isLiveData;
+  @override
+  List<Object?> get props => [data, isLiveData];
 }
 
 class LoadedDatabaseComments extends HomeState {
@@ -33,6 +38,9 @@ class LoadedDatabaseComments extends HomeState {
   List<DataRow> getData() => data;
   @override
   bool getDataLocation() => isLiveData;
+
+  @override
+  List<Object?> get props => [data, isLiveData];
 }
 
 class ErrorWhileLoading extends HomeState {}

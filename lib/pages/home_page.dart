@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/bloc/home_bloc.dart';
 import 'package:test_app/models/comment_data_table_source.dart';
+import 'package:test_app/widgets/comment_data_status_widget.dart';
+import 'package:test_app/widgets/comment_table_view.dart';
+import 'package:test_app/widgets/error_state_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -27,6 +30,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
@@ -39,28 +48,8 @@ class _HomePageState extends State<HomePage> {
               return SizedBox(
                 height: MediaQuery.of(context).size.height,
                 child: Column(children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 10),
-                        decoration: BoxDecoration(
-                          color: state.getDataLocation()
-                              ? Colors.green
-                              : Colors.red,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Text(
-                            state.getDataLocation()
-                                ? 'Live Data'
-                                : 'Stored Data from DB',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                            )),
-                      )
-                    ],
+                  CommentDataStatusWidget(
+                    dataLocation: state.getDataLocation(),
                   ),
                   const SizedBox(height: 20),
                   Expanded(
@@ -80,64 +69,12 @@ class _HomePageState extends State<HomePage> {
               return const Center(child: CircularProgressIndicator());
             }
             if (state is ErrorWhileLoading) {
-              return SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "Something went wrong, check your network and try again.",
-                      textAlign: TextAlign.center,
-                    ),
-                    ElevatedButton(
-                      onPressed: () => BlocProvider.of<HomeBloc>(context)
-                          .add(LoadData(context: context)),
-                      child: const Text("Try again"),
-                    ),
-                  ],
-                ),
-              );
+              return const ErrorStateWidget();
             }
             return const Center(child: Text("Uncought error"));
           },
         ),
       ),
-    );
-  }
-}
-
-class CommetTableView extends StatelessWidget {
-  const CommetTableView({
-    Key? key,
-    required this.controller,
-    required this.data,
-  }) : super(key: key);
-
-  final ScrollController controller;
-  final List<DataRow> data;
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomScrollView(
-      scrollDirection: Axis.horizontal,
-      slivers: [
-        SliverToBoxAdapter(
-          child: SingleChildScrollView(
-            controller: controller,
-            child: DataTable(
-              columns: const [
-                DataColumn(label: Text("id")),
-                DataColumn(label: Text("Post id")),
-                DataColumn(label: Text("Name")),
-                DataColumn(label: Text("Email")),
-                DataColumn(label: Text("Body")),
-              ],
-              rows: data,
-            ),
-          ),
-        ),
-      ],
     );
   }
 }
