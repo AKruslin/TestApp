@@ -13,6 +13,8 @@ import 'package:test_app/services/rest_client.dart';
 part 'home_event.dart';
 part 'home_state.dart';
 
+final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
 @injectable
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final NetworkService _networkService;
@@ -33,7 +35,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       RestClient restClient = _networkService.getRestClient();
       comments = await restClient.getComments();
       rowComments =
-          CommentDataTableRow(comments, event.context).dataRowComments;
+          CommentDataTableRow(comments, scaffoldKey.currentContext!).dataRowComments;
       //isLiveData is for user to know if it was fetched from network or from local database
       isLive = true;
       emit(
@@ -43,7 +45,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     } catch (e) {
       comments = await database!.commentDao.findAllPersons();
       rowComments =
-          CommentDataTableRow(comments, event.context).dataRowComments;
+          CommentDataTableRow(comments, scaffoldKey.currentContext!).dataRowComments;
       isLive = false;
       comments.isEmpty
           ? emit(ErrorWhileLoading())

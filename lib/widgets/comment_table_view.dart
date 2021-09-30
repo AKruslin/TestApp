@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/bloc/home_bloc.dart';
 
-class CommetTableView extends StatelessWidget {
+class CommetTableView extends StatefulWidget {
   const CommetTableView({
     Key? key,
     required this.controller,
@@ -13,6 +13,11 @@ class CommetTableView extends StatelessWidget {
   final List<DataRow> data;
 
   @override
+  State<CommetTableView> createState() => _CommetTableViewState();
+}
+
+class _CommetTableViewState extends State<CommetTableView> {
+  @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
@@ -21,7 +26,7 @@ class CommetTableView extends StatelessWidget {
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         key: const ValueKey("commentDataList"),
-        controller: controller,
+        controller: widget.controller,
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: DataTable(
@@ -32,7 +37,7 @@ class CommetTableView extends StatelessWidget {
               DataColumn(label: Text("Email")),
               DataColumn(label: Text("Body")),
             ],
-            rows: data,
+            rows: widget.data,
           ),
         ),
       ),
