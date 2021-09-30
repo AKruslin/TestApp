@@ -53,15 +53,9 @@ class _HomePageState extends State<HomePage> {
                   ),
                   const SizedBox(height: 20),
                   Expanded(
-                    child: RefreshIndicator(
-                      onRefresh: () async {
-                        BlocProvider.of<HomeBloc>(context)
-                            .add(LoadData(context: context));
-                      },
-                      child: CommetTableView(
-                          controller: controller, data: state.getData()),
-                    ),
-                  ),
+                    child: CommetTableView(
+                        controller: controller, data: state.getData()),
+                  )
                 ]),
               );
             }
