@@ -7,9 +7,13 @@
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 
-import '../bloc/home_bloc.dart' as _i5;
+import '../common/services/network_service.dart' as _i5;
+import '../data/datasource/comment_datasource.dart' as _i6;
+import '../data/repository/comment_repository_impl.dart' as _i8;
+import '../domain/repository/comment_repository.dart' as _i7;
+import '../domain/usecases/get_comments_usecase.dart' as _i9;
 import '../flavor_config.dart' as _i3;
-import '../services/network_service.dart' as _i4;
+import '../presentation/bloc/home_bloc.dart' as _i4;
 
 const String _stage = 'stage';
 const String _development = 'development';
@@ -23,8 +27,14 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.singleton<_i3.FlavorConfig>(_i3.StageConfig(), registerFor: {_stage});
   gh.singleton<_i3.FlavorConfig>(_i3.DevConfig(), registerFor: {_development});
   gh.singleton<_i3.FlavorConfig>(_i3.ProdConfig(), registerFor: {_production});
-  gh.singleton<_i4.NetworkService>(
-      _i4.NetworkServiceImpl(get<_i3.FlavorConfig>()));
-  gh.factory<_i5.HomeBloc>(() => _i5.HomeBloc(get<_i4.NetworkService>()));
+  gh.factory<_i4.HomeBloc>(() => _i4.HomeBloc());
+  gh.singleton<_i5.NetworkService>(
+      _i5.NetworkServiceImpl(get<_i3.FlavorConfig>()));
+  gh.lazySingleton<_i6.CommentDatasource>(() =>
+      _i6.CommentDatasourceImpl(networkService: get<_i5.NetworkService>()));
+  gh.singleton<_i7.CommentRepository>(_i8.CommentRepositoryImpl(
+      commentDatasource: get<_i6.CommentDatasource>()));
+  gh.lazySingleton<_i9.GetCommentsUsecase>(
+      () => _i9.GetCommentsUsecase(get<_i7.CommentRepository>()));
   return get;
 }

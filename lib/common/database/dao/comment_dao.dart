@@ -1,5 +1,5 @@
 import 'package:floor/floor.dart';
-import 'package:test_app/models/comment.dart';
+import 'package:test_app/data/models/comment.dart';
 
 @dao
 abstract class CommentDao {

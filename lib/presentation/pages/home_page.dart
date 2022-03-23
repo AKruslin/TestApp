@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test_app/bloc/home_bloc.dart';
-import 'package:test_app/models/comment_data_table_source.dart';
-import 'package:test_app/widgets/comment_data_status_widget.dart';
-import 'package:test_app/widgets/comment_table_view.dart';
-import 'package:test_app/widgets/error_state_widget.dart';
+import 'package:test_app/presentation/bloc/home_bloc.dart';
+import 'package:test_app/data/models/comment_data_table_source.dart';
+import 'package:test_app/presentation/widgets/comment_data_status_widget.dart';
+import 'package:test_app/presentation/widgets/comment_table_view.dart';
+import 'package:test_app/presentation/widgets/error_state_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
             if (state is ErrorWhileLoading) {
               return const ErrorStateWidget();
             }
-            return const Center(child: Text("Uncought error"));
+            return const Center(child: Text("Uncaught error"));
           },
         ),
       ),

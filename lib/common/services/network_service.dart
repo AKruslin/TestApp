@@ -1,8 +1,7 @@
 import 'package:dio/dio.dart' hide Headers;
 import 'package:injectable/injectable.dart';
-import 'package:retrofit/retrofit.dart';
 import 'package:test_app/flavor_config.dart';
-import 'package:test_app/services/rest_client.dart';
+import 'package:test_app/common/services/rest_client.dart';
 
 abstract class NetworkService {
   RestClient getRestClient();

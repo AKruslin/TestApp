@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:floor/floor.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
 
-import 'package:test_app/database/dao/comment_dao.dart';
-import 'package:test_app/models/comment.dart';
+import 'package:test_app/common/database/dao/comment_dao.dart';
+import 'package:test_app/data/models/comment.dart';
 
 //throws error about naming but everything works
 part 'database.g.dart';

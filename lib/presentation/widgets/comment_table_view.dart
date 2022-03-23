@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test_app/bloc/home_bloc.dart';
+import 'package:test_app/presentation/bloc/home_bloc.dart';
 
 class CommetTableView extends StatefulWidget {
   const CommetTableView({
