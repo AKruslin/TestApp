@@ -1,12 +1,10 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:test_app/bloc/home_bloc.dart';
-import 'package:test_app/flavor_config.dart';
-import 'package:test_app/models/comment.dart';
-import 'package:test_app/models/comment_data_table_source.dart';
-import 'package:test_app/services/network_service.dart';
-import 'package:test_app/widgets/comment_table_view.dart';
+import 'package:test_app/presentation/bloc/home_bloc.dart';
+import 'package:test_app/data/models/comment.dart';
+import 'package:test_app/data/models/comment_data_table_source.dart';
+import 'package:test_app/presentation/widgets/comment_table_view.dart';
 
 void main() {
   testWidgets('Open 20th data cell alert dialog', (widgetTester) async {
@@ -51,7 +49,7 @@ void main() {
 
   HomeBloc? bloc;
   setUp(() {
-    bloc = HomeBloc(NetworkServiceImpl(StageConfig()));
+    bloc = HomeBloc();
   });
 
   tearDown(() {
@@ -74,7 +72,7 @@ void main() {
   });
 
   blocTest<HomeBloc, HomeState>("Check if load more actually loads more comments",
-      build: () => HomeBloc(NetworkServiceImpl(StageConfig())),
+      build: () => HomeBloc(),
       act: (bloc) {
         for (var i = 0; i < 150; i++) {
           bloc.rowComments.add(DataRow(

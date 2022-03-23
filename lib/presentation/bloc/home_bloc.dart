@@ -3,12 +3,11 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meta/meta.dart';
-import 'package:test_app/database/database.dart';
-import 'package:test_app/models/comment.dart';
-import 'package:test_app/models/comment_data_table_source.dart';
-import 'package:test_app/services/network_service.dart';
-import 'package:test_app/services/rest_client.dart';
+import 'package:test_app/common/database/database.dart';
+import 'package:test_app/data/models/comment.dart';
+import 'package:test_app/data/models/comment_data_table_source.dart';
+import 'package:test_app/di/injection.dart';
+import 'package:test_app/domain/usecases/get_comments_usecase.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
@@ -17,9 +16,8 @@ final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
 @injectable
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  final NetworkService _networkService;
   AppDatabase? database;
-  HomeBloc(this._networkService) : super(LoadingComments()) {
+  HomeBloc() : super(LoadingComments()) {
     on<LoadData>(loadData);
     on<LoadMoreData>(loadMoreData);
   }
@@ -31,21 +29,21 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   FutureOr<void> loadData(event, emit) async {
     emit(LoadingComments());
     database = await getDatabase();
-    try {
-      RestClient restClient = _networkService.getRestClient();
-      comments = await restClient.getComments();
-      rowComments =
-          CommentDataTableRow(comments, scaffoldKey.currentContext!).dataRowComments;
+    var either = await getIt<GetCommentsUsecase>().call('');
+    if (either.isRight()) {
+      either.fold((l) => null, (r) => comments = r);
+      rowComments = CommentDataTableRow(comments, scaffoldKey.currentContext!)
+          .dataRowComments;
       //isLiveData is for user to know if it was fetched from network or from local database
       isLive = true;
       emit(
         LoadedNetworkComments(data: rowComments.sublist(0, endPointer)),
       );
       saveData();
-    } catch (e) {
+    } else {
       comments = await database!.commentDao.findAllPersons();
-      rowComments =
-          CommentDataTableRow(comments, scaffoldKey.currentContext!).dataRowComments;
+      rowComments = CommentDataTableRow(comments, scaffoldKey.currentContext!)
+          .dataRowComments;
       isLive = false;
       comments.isEmpty
           ? emit(ErrorWhileLoading())
